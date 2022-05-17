@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import PropsSolutions from "../../types/PropsSolutions";
 import useWordleHook from "../hooks/useWordleHook";
+import Grid from "./Grid";
 
 const Wordle: React.FC<PropsSolutions> = ({ solution }) => {
   const {
@@ -23,8 +24,11 @@ const Wordle: React.FC<PropsSolutions> = ({ solution }) => {
   return (
     <div>
       <div>solutions: {solution.word} </div>
-
-      <div>Current guess: {currentGuess} </div>
+      <Grid
+        currentGuess={currentGuess}
+        numberOfTurns={numberOfTurns}
+        userGuesses={userGuesses}
+      />
     </div>
   );
 };
