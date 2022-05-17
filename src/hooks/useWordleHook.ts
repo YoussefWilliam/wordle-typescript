@@ -5,7 +5,9 @@ import Solution from "../../types/Solution";
 const useWordleHook = (solution: Solution) => {
   const [numberOfTurns, setNumberOfTurns] = useState<number>(0); // if 6 -> game over
   const [currentGuess, setCurrentGuess] = useState<string>(""); // track what user is typing
-  const [userGuesses, setGuesses] = useState<Array<string>>([]); // number of guess with colors per game
+  const [userGuesses, setGuesses] = useState<Array<Guesses> | any>([
+    ...Array(6),
+  ]); // number of guess with colors per game
   const [historyGuesses, setHistoryGuesses] = useState<Array<string>>([]); // number of guesses per Game
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   /**
@@ -13,12 +15,23 @@ const useWordleHook = (solution: Solution) => {
    * [{key: 'a', color: 'red'}]
    * @param solution
    * @returns object of Guesses
+   * @params => blink => ['b', 'l', 'i', 'n', 'k']
+   * @returns => guess => block => [{key: 'b', color: 'green'}, {key:'l', color: 'green'}, {key: 'o', color: 'gray'},{key: 'c' ,color: 'gray'}, {key: 'k', color: 'green'} ]
    */
   const formatGuess = () => {
-    console.log("new guess is added");
-    historyGuesses.push(currentGuess);
-    setCurrentGuess("");
-    setNumberOfTurns((prevTurn) => prevTurn + 1);
+    const destructedSolution = solution.word.split("");
+    const formattedArray = destructedSolution.map((solutionLetter, i) => {
+      return {
+        key: currentGuess[i],
+        color:
+          solutionLetter === currentGuess[i]
+            ? "green"
+            : solution.word.includes(currentGuess[i])
+            ? "yellow"
+            : "gray",
+      };
+    });
+    return formattedArray;
   };
 
   /**
@@ -27,7 +40,20 @@ const useWordleHook = (solution: Solution) => {
    * add one to the turn state
    * @param guess
    */
-  const addNewGuesses = () => {};
+  const addNewGuesses = (formattedGuess: Array<Guesses>) => {
+    if (currentGuess === solution.word) {
+      setIsCorrect(true);
+    }
+    setGuesses((prevGuess: any) => {
+      let newGuesses = [...prevGuess];
+      newGuesses[numberOfTurns] = formattedGuess;
+      return newGuesses;
+    });
+
+    setHistoryGuesses([...historyGuesses, currentGuess]);
+    setNumberOfTurns((prevTurn) => prevTurn + 1);
+    setCurrentGuess("");
+  };
 
   /**
    * check if the user presssed an enter btn to submit the guess
@@ -54,7 +80,8 @@ const useWordleHook = (solution: Solution) => {
         console.log("you already tried this word before, take another guess");
         return;
       }
-      formatGuess();
+      const formattedGuess = formatGuess();
+      addNewGuesses(formattedGuess);
     }
   };
 
