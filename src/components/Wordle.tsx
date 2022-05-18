@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PropsSolutions from "../../types/PropsSolutions";
 import useWordleHook from "../hooks/useWordleHook";
 import Grid from "./Grid";
+import Keypad from "./Keypad";
 
 const Wordle: React.FC<PropsSolutions> = ({ solution }) => {
   const {
@@ -17,10 +18,6 @@ const Wordle: React.FC<PropsSolutions> = ({ solution }) => {
     return () => window.removeEventListener("keyup", handleKeyPress);
   }, [handleKeyPress]);
 
-  useEffect(() => {
-    console.log(userGuesses, isCorrect, numberOfTurns);
-  }, [userGuesses, numberOfTurns, isCorrect]);
-
   return (
     <div>
       <div>solutions: {solution.word} </div>
@@ -29,6 +26,7 @@ const Wordle: React.FC<PropsSolutions> = ({ solution }) => {
         numberOfTurns={numberOfTurns}
         userGuesses={userGuesses}
       />
+      <Keypad />
     </div>
   );
 };

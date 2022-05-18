@@ -16,7 +16,7 @@ const useWordleHook = (solution: Solution) => {
    * @param solution
    * @returns object of Guesses
    * @params => blink => ['b', 'l', 'i', 'n', 'k']
-   * @returns => guess => block => [{key: 'b', color: 'green'}, {key:'l', color: 'green'}, {key: 'o', color: 'gray'},{key: 'c' ,color: 'gray'}, {key: 'k', color: 'green'} ]
+   * @returns => guess => block => [{key: 'b', color: 'green'}, {key:'l', color: 'green'}, {key: 'o', color: 'grey'},{key: 'c' ,color: 'grey'}, {key: 'k', color: 'green'} ]
    */
   const formatGuess = () => {
     const destructedSolution = solution.word.split("");
@@ -28,7 +28,7 @@ const useWordleHook = (solution: Solution) => {
             ? "green"
             : solution.word.includes(currentGuess[i])
             ? "yellow"
-            : "gray",
+            : "grey",
       };
     });
     return formattedArray;
