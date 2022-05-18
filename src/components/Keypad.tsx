@@ -8,7 +8,7 @@ const Keypad: React.FC = () => {
       .then((res) => res.json())
       .then((data) => setLetters(data));
   }, []);
-  console.log(letters);
+
   return (
     <div className="keypad">
       {letters?.map((letter) => (
