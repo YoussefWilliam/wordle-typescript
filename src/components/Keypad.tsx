@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Keys from "../../types/Keys";
-const Keypad: React.FC = () => {
+
+type PropsKeys = {
+  usedKeys: Keys | any;
+};
+
+const Keypad: React.FC<PropsKeys> = ({ usedKeys }) => {
   const [letters, setLetters] = useState<Array<Keys>>([]);
 
   useEffect(() => {
@@ -11,9 +16,14 @@ const Keypad: React.FC = () => {
 
   return (
     <div className="keypad">
-      {letters?.map((letter) => (
-        <div key={letter.key}> {letter.key}</div>
-      ))}
+      {letters?.map((letter: Keys) => {
+        const color = usedKeys && usedKeys[letter.key];
+        return (
+          <div key={letter.key} className={color}>
+            {letter.key}
+          </div>
+        );
+      })}
     </div>
   );
 };

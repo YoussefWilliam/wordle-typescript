@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Guesses from "../../types/Guesses";
+import Keys from "../../types/Keys";
 import Solution from "../../types/Solution";
 
 const useWordleHook = (solution: Solution) => {
@@ -10,6 +11,7 @@ const useWordleHook = (solution: Solution) => {
   ]); // number of guess with colors per game
   const [historyGuesses, setHistoryGuesses] = useState<Array<string>>([]); // number of guesses per Game
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
+  const [usedKeys, setUsedKeys] = useState<Keys>();
   /**
    * Format the guess of the user into an array of object:
    * [{key: 'a', color: 'red'}]
@@ -52,6 +54,29 @@ const useWordleHook = (solution: Solution) => {
 
     setHistoryGuesses([...historyGuesses, currentGuess]);
     setNumberOfTurns((prevTurn) => prevTurn + 1);
+    setUsedKeys((prevKeys: any) => {
+      let newKeys = { ...prevKeys };
+      formattedGuess.forEach((formatGuess: any) => {
+        const currentColor = newKeys[formatGuess.key];
+        if (formatGuess.color === "green") {
+          newKeys[formatGuess.key] = "green";
+          return;
+        }
+        if (formatGuess.color === "yellow" && currentColor !== "green") {
+          newKeys[formatGuess.key] = "yellow";
+          return;
+        }
+        if (
+          formatGuess.color === "grey" &&
+          currentColor !== "green" &&
+          currentColor !== "yellow"
+        ) {
+          newKeys[formatGuess.key] = "grey";
+          return;
+        }
+      });
+      return newKeys;
+    });
     setCurrentGuess("");
   };
 
@@ -90,6 +115,7 @@ const useWordleHook = (solution: Solution) => {
     currentGuess,
     userGuesses,
     isCorrect,
+    usedKeys,
     handleKeyPress,
   };
 };
