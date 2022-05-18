@@ -33,7 +33,6 @@ const Wordle: React.FC<PropsSolutions> = ({ solution }) => {
 
   return (
     <div>
-      <div>solutions: {solution.word} </div>
       <Grid
         currentGuess={currentGuess}
         numberOfTurns={numberOfTurns}
