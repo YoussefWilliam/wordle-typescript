@@ -93,18 +93,13 @@ const useWordleHook = (solution: Solution) => {
       setCurrentGuess((prevGuess) => prevGuess + key);
     }
     if (key === "Enter") {
-      if (numberOfTurns > 5) {
-        console.log("you finished up your guesses trials, game over");
+      if (
+        numberOfTurns > 5 ||
+        currentGuess.length !== 5 ||
+        historyGuesses.includes(currentGuess)
+      )
         return;
-      }
-      if (currentGuess.length !== 5) {
-        console.log("guess is a string of 5");
-        return;
-      }
-      if (historyGuesses.includes(currentGuess)) {
-        console.log("you already tried this word before, take another guess");
-        return;
-      }
+
       const formattedGuess = formatGuess();
       addNewGuesses(formattedGuess);
     }

@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Solution from "../types/Solution";
 import Wordle from "./components/Wordle";
+import { solutions } from "../src/data/db";
 
 function App() {
   const [solution, setSolution] = useState<Solution>();
   useEffect(() => {
-    fetch("http://localhost:3001/solutions")
-      .then((res) => res.json())
-      .then((data) => {
-        const dataLength = data.length;
-        setSolution(data[Math.floor(Math.random() * dataLength)]);
-      });
+    const dataLength = solutions.length;
+    setSolution(solutions[Math.floor(Math.random() * dataLength)]);
   }, [setSolution]);
 
   return (
